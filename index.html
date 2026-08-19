@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="de"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mietix Endabrechnung</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--rot:#C4161C;--dunkel:#1B1B1E;--rand:#E4E4E8;--grau:#6B6B73;--gruen:#1B8A4B}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:#F2F2F4;font:16px/1.45 Inter,system-ui,sans-serif;color:#16161A;
+  padding-bottom:40px}
+header{background:var(--dunkel);color:#fff;padding:16px 18px;position:sticky;top:0;z-index:9;
+  border-bottom:4px solid var(--rot)}
+header b{font-weight:800;letter-spacing:.14em;font-size:15px}
+header b span{color:var(--rot)}
+main{max-width:640px;margin:0 auto;padding:16px}
+.karte{background:#fff;border:1px solid var(--rand);border-radius:16px;padding:16px;margin-bottom:14px}
+h2{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--grau);
+  margin:0 0 12px;font-weight:800}
+label{display:block;font-size:13px;font-weight:600;color:var(--grau);margin:10px 0 5px}
+input,select{width:100%;padding:13px 14px;font:600 17px Inter,system-ui,sans-serif;
+  border:1.5px solid var(--rand);border-radius:11px;background:#fff;color:#16161A}
+input:focus,select:focus{outline:none;border-color:var(--rot)}
+.zwei{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.erg{background:#FAFAFB;border:1px solid var(--rand);border-radius:12px;padding:12px 14px;margin-top:12px}
+.z{display:flex;justify-content:space-between;gap:12px;padding:6px 0;font-size:15px}
+.z b{font-weight:700}
+.z.gross{font-size:19px;font-weight:800;border-top:1.5px solid var(--rand);margin-top:6px;padding-top:10px}
+.z .k{color:var(--grau)}
+.rot{color:var(--rot)}.gruen{color:var(--gruen)}
+.posten{border:1.5px solid var(--rand);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.posten.an{border-color:var(--rot);background:#FFF7F7}
+.kopf{display:flex;align-items:center;gap:12px;cursor:pointer}
+.kopf .t{flex:1;font-weight:700;font-size:15px}
+.kopf .b{font-weight:800;font-size:15px;color:var(--grau)}
+.posten.an .kopf .b{color:var(--rot)}
+.schalter{width:50px;height:29px;border-radius:15px;background:#D6D6DC;position:relative;flex:0 0 auto;
+  transition:background .15s}
+.schalter i{position:absolute;top:3px;left:3px;width:23px;height:23px;border-radius:50%;
+  background:#fff;transition:left .15s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.posten.an .schalter{background:var(--rot)}
+.posten.an .schalter i{left:24px}
+.rumpf{display:none;margin-top:12px}
+.posten.an .rumpf{display:block}
+.erkl{font-size:13px;line-height:1.5;color:var(--grau);background:#F4F4F6;border-radius:9px;
+  padding:10px 12px;margin-top:10px}
+button{width:100%;padding:16px;font:800 17px Inter,system-ui,sans-serif;border:0;border-radius:13px;
+  background:var(--rot);color:#fff;margin-top:10px}
+button.zweit{background:#fff;color:#16161A;border:1.5px solid var(--rand)}
+.hinweis{font-size:12.5px;color:var(--grau);margin-top:8px;line-height:1.45}
+.wa{background:#fff;border:1px solid var(--rand);border-radius:12px;padding:12px 14px;
+  white-space:pre-wrap;font-size:14px;line-height:1.5;margin-top:12px;max-height:300px;overflow:auto}
+</style></head><body>
+<header><b>MIETIX <span>ENDABRECHNUNG</span></b></header>
+<main>
+
+<div class="karte">
+  <h2>Fahrzeug und Mietdauer</h2>
+  <label>Fahrzeug</label>
+  <select id="auto"></select>
+  <div class="zwei">
+    <div><label>Miettage</label><input id="tage" type="number" inputmode="numeric" min="1" value="1"></div>
+    <div><label>Kilometerpaket</label><select id="paket"></select></div>
+  </div>
+</div>
+
+<div class="karte">
+  <h2>Kilometerstand</h2>
+  <div class="zwei">
+    <div><label>Bei Übergabe</label><input id="kmVon" type="number" inputmode="numeric" placeholder="z. B. 24500"></div>
+    <div><label>Bei Rückgabe</label><input id="kmBis" type="number" inputmode="numeric" placeholder="z. B. 25740"></div>
+  </div>
+  <div class="erg" id="kmErg"></div>
+</div>
+
+<div class="karte">
+  <h2>Weitere Kosten</h2>
+  <div id="posten"></div>
+</div>
+
+<div class="karte">
+  <h2>Abrechnung</h2>
+  <label>Kaution</label>
+  <input id="kaution" type="number" inputmode="numeric">
+  <div class="erg" id="summe"></div>
+</div>
+
+<div class="karte">
+  <h2>An den Kunden senden</h2>
+  <label>Handynummer des Kunden</label>
+  <input id="nummer" type="tel" inputmode="tel" placeholder="0176 12345678">
+  <label style="display:flex;align-items:center;gap:10px;margin-top:14px;font-size:15px;color:#16161A">
+    <input id="mitErkl" type="checkbox" checked style="width:22px;height:22px;flex:0 0 auto">
+    Begründungen mitschicken
+  </label>
+  <button id="senden">Per WhatsApp senden</button>
+  <button id="kopieren" class="zweit">Text kopieren</button>
+  <div class="hinweis">Ohne Nummer öffnet WhatsApp die Kontaktauswahl.</div>
+  <div class="wa" id="vorschau"></div>
+</div>
+
+</main>
+<script>
+const D={"freiKm": 150, "stufen": [50, 100, 150, 200, 300], "cars": [{"n": "Audi RS Q8", "gp": 349.0, "pakete": [109, 189, 259, 319, 439], "kmPreis": 2.49, "kaution": 1950}, {"n": "Audi RS 5 ABT", "gp": 249.0, "pakete": [99, 169, 229, 289, 399], "kmPreis": 2.29, "kaution": 1450}, {"n": "Audi RS 3 Limousine", "gp": 199.0, "pakete": [89, 149, 199, 249, 349], "kmPreis": 1.99, "kaution": 1450}, {"n": "VW Golf 8 GTI Clubsport", "gp": 149.0, "pakete": [79, 129, 179, 219, 309], "kmPreis": 1.79, "kaution": 1000}, {"n": "Audi RS 6", "gp": 349.0, "pakete": [109, 189, 259, 319, 439], "kmPreis": 2.49, "kaution": 1950}, {"n": "Mercedes GLC 63 S AMG", "gp": 269.0, "pakete": [99, 169, 229, 289, 399], "kmPreis": 2.29, "kaution": 1450}, {"n": "Mercedes C 63 S AMG", "gp": 289.0, "pakete": [99, 169, 229, 289, 399], "kmPreis": 2.29, "kaution": 1450}, {"n": "Audi R8 performance", "gp": 399.0, "pakete": [129, 229, 309, 379, 509], "kmPreis": 2.99, "kaution": 1950}, {"n": "Mercedes E 400 d", "gp": 149.0, "pakete": [55, 89, 119, 149, 199], "kmPreis": 1.29, "kaution": 1000}, {"n": "VW Golf 8 2.0 Diesel", "gp": 99.0, "pakete": [39, 65, 85, 99, 129], "kmPreis": 0.89, "kaution": 1000}]}, POSTEN=[{"k": "aufbereitung", "t": "Aufbereitung Innenraum", "betrag": 199, "art": "fest", "e": "Das Fahrzeug riecht nach Rauch, Tierhaaren oder Essen. Der Innenraum muss professionell aufbereitet werden, inklusive Ozonbehandlung, Polster und Lüftung. Während dieser Zeit kann das Fahrzeug nicht vermietet werden."}, {"k": "reinigung", "t": "Reinigung aussen und innen", "betrag": 49, "art": "fest", "e": "Vereinbart ist die Rückgabe in sauberem Zustand. Das Fahrzeug wurde stark verschmutzt zurückgegeben und musste vor der nächsten Vermietung gewaschen und ausgesaugt werden."}, {"k": "kraftstoff", "t": "Kraftstoff", "betrag": 2.5, "art": "einheit", "einheit": "fehlende Liter", "pauschale": 25, "e": "Vereinbart ist die Rückgabe mit vollem Tank. Berechnet werden die fehlenden Liter zum Tagespreis plus eine Servicepauschale für die Fahrt zur Tankstelle."}, {"k": "verspaetung", "t": "Verspätete Rückgabe", "betrag": 0, "art": "einheit", "einheit": "angefangene Stunden", "e": "Berechnet wird jede angefangene Stunde nach der vereinbarten Rückgabezeit. Ab vier Stunden entspricht das einem vollen Miettag, weil der Anschlussmieter in dieser Zeit nicht bedient werden kann."}, {"k": "schlüssel", "t": "Schlüsselverlust", "betrag": 750, "art": "fest", "e": "Ein Ersatzschlüssel muss beim Hersteller bestellt und programmiert werden. Bis er da ist, steht das Fahrzeug still."}, {"k": "papiere", "t": "Fahrzeugpapiere verloren", "betrag": 150, "art": "fest", "e": "Zulassungsbescheinigung Teil I muss neu bei der Zulassungsstelle beantragt werden. Enthalten sind Gebühren und Fahrtzeit."}, {"k": "owi", "t": "Bearbeitung Bussgeld", "betrag": 25, "art": "einheit", "einheit": "Vorgänge", "e": "Für jede behördliche Anfrage zu einem Verstoss in Ihrer Mietzeit müssen wir als Halter Auskunft geben. Berechnet wird nur dieser Aufwand. Das Bussgeld selbst zahlen Sie direkt an die Behörde."}, {"k": "abholung", "t": "Abholung oder Rückführung", "betrag": 1.5, "art": "einheit", "einheit": "Kilometer", "e": "Das Fahrzeug wurde nicht am vereinbarten Ort zurückgegeben und musste von uns abgeholt werden. Berechnet werden die gefahrenen Kilometer."}, {"k": "ausserhalb", "t": "Rückgabe ausserhalb der Zeiten", "betrag": 49, "art": "fest", "e": "Die Rückgabe fand ausserhalb der vereinbarten Zeiten statt und musste persönlich betreut werden."}, {"k": "sonstiges", "t": "Sonstiges", "betrag": 0, "art": "frei", "e": "Frei eintragbare Position mit eigener Bezeichnung."}];
+const $=id=>document.getElementById(id);
+const EUR=new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR"});
+const NUM=new Intl.NumberFormat("de-DE");
+const auto=()=>D.cars.find(a=>a.n===$("auto").value)||D.cars[0];
+
+$("auto").innerHTML=D.cars.map(a=>'<option>'+a.n+'</option>').join("");
+$("paket").innerHTML='<option value="-1">Kein Paket</option>'
+  +D.stufen.map((s,i)=>'<option value="'+i+'">+'+s+' km pro Tag</option>').join("");
+
+$("posten").innerHTML=POSTEN.map(p=>
+  '<div class="posten" data-k="'+p.k+'">'
+  +'<div class="kopf"><div class="schalter"><i></i></div>'
+  +'<div class="t">'+p.t+'</div><div class="b" id="b_'+p.k+'">0,00 &euro;</div></div>'
+  +'<div class="rumpf">'
+  +(p.art==="frei"?'<label>Bezeichnung</label><input id="txt_'+p.k+'" type="text" placeholder="Wofür?">':'')
+  +(p.art==="einheit"
+     ?'<div class="zwei"><div><label>'+p.einheit+'</label>'
+      +'<input id="m_'+p.k+'" type="number" inputmode="decimal" value="0"></div>'
+      +'<div><label>Preis je Einheit</label>'
+      +'<input id="p_'+p.k+'" type="number" inputmode="decimal" step="0.01" value="'+p.betrag+'"></div></div>'
+      +(p.pauschale?'<label>Servicepauschale</label>'
+        +'<input id="s_'+p.k+'" type="number" inputmode="decimal" value="'+p.pauschale+'">':'')
+     :'<label>Betrag</label><input id="p_'+p.k+'" type="number" inputmode="decimal" step="0.01" value="'+p.betrag+'">')
+  +'<div class="erkl">'+p.e+'</div>'
+  +'</div></div>').join("");
+
+document.querySelectorAll(".posten .kopf").forEach(k=>{
+  k.onclick=e=>{ if(e.target.tagName==="INPUT")return;
+    k.parentElement.classList.toggle("an"); rechne(); };
+});
+
+function paketFrei(){ const i=+$("paket").value; return i<0?0:D.stufen[i]; }
+
+function postenListe(){
+  const raus=[];
+  POSTEN.forEach(p=>{
+    const el=document.querySelector('.posten[data-k="'+p.k+'"]');
+    if(!el.classList.contains("an"))return;
+    const preis=+($("p_"+p.k)||{}).value||0;
+    let betrag=preis, zusatz="";
+    if(p.art==="einheit"){
+      const menge=+($("m_"+p.k)||{}).value||0;
+      const pausch=p.pauschale?(+($("s_"+p.k)||{}).value||0):0;
+      betrag=menge*preis+pausch;
+      zusatz=NUM.format(menge)+" "+p.einheit+" x "+EUR.format(preis)
+             +(pausch?" + "+EUR.format(pausch)+" Pauschale":"");
+    }
+    let titel=p.t;
+    if(p.art==="frei"){ const t=($("txt_"+p.k)||{}).value; if(t&&t.trim())titel=t.trim(); }
+    $("b_"+p.k).textContent=EUR.format(betrag);
+    raus.push({t:titel,betrag:betrag,zusatz:zusatz,e:p.e});
+  });
+  POSTEN.forEach(p=>{
+    const el=document.querySelector('.posten[data-k="'+p.k+'"]');
+    if(!el.classList.contains("an"))$("b_"+p.k).textContent=EUR.format(0);
+  });
+  return raus;
+}
+
+function rechne(){
+  const a=auto();
+  const tage=Math.max(1,+$("tage").value||1);
+  const frei=(D.freiKm+paketFrei())*tage;
+  const v=+$("kmVon").value, b=+$("kmBis").value;
+  const gefahren=(v>0&&b>0&&b>=v)?b-v:0;
+  const mehr=Math.max(0,gefahren-frei);
+  const kmBetrag=mehr*a.kmPreis;
+
+  $("kmErg").innerHTML=
+    '<div class="z"><span class="k">Gefahren</span><b>'+NUM.format(gefahren)+' km</b></div>'
+    +'<div class="z"><span class="k">Frei ('+NUM.format(D.freiKm+paketFrei())+' km x '+tage+' Tage)</span><b>'+NUM.format(frei)+' km</b></div>'
+    +'<div class="z"><span class="k">Mehrkilometer</span><b class="'+(mehr?'rot':'gruen')+'">'+NUM.format(mehr)+' km</b></div>'
+    +(mehr?'<div class="z"><span class="k">'+NUM.format(mehr)+' km x '+EUR.format(a.kmPreis)+'</span><b class="rot">'+EUR.format(kmBetrag)+'</b></div>':'')
+    +'<div class="z gross"><span>Mehrkilometer</span><span class="'+(mehr?'rot':'gruen')+'">'+EUR.format(kmBetrag)+'</span></div>';
+
+  const liste=postenListe();
+  const summe=kmBetrag+liste.reduce((s,p)=>s+p.betrag,0);
+  const kaution=+$("kaution").value||0;
+  const rest=kaution-summe;
+
+  $("summe").innerHTML=
+    (kmBetrag?'<div class="z"><span class="k">Mehrkilometer</span><b>'+EUR.format(kmBetrag)+'</b></div>':'')
+    +liste.map(p=>'<div class="z"><span class="k">'+p.t+'</span><b>'+EUR.format(p.betrag)+'</b></div>').join("")
+    +(summe===0?'<div class="z"><span class="k">Keine Zusatzkosten</span><b>'+EUR.format(0)+'</b></div>':'')
+    +'<div class="z gross"><span>Kosten gesamt</span><span class="'+(summe?'rot':'gruen')+'">'+EUR.format(summe)+'</span></div>'
+    +'<div class="z"><span class="k">Kaution</span><b>'+EUR.format(kaution)+'</b></div>'
+    +'<div class="z gross"><span>'+(rest>=0?'Rückzahlung':'Nachzahlung')+'</span><span class="'
+      +(rest>=0?'gruen':'rot')+'">'+EUR.format(Math.abs(rest))+'</span></div>';
+
+  $("vorschau").textContent=text(a,tage,frei,gefahren,mehr,kmBetrag,liste,summe,kaution,rest);
+}
+
+function text(a,tage,frei,gefahren,mehr,kmBetrag,liste,summe,kaution,rest){
+  const erkl=$("mitErkl").checked;
+  let t="*Endabrechnung "+a.n+"*\n"+tage+" Miettage\n";
+  t+="\n*Kilometer*\n";
+  t+="Gefahren: "+NUM.format(gefahren)+" km\n";
+  t+="Inklusive: "+NUM.format(frei)+" km\n";
+  if(mehr>0){
+    t+="Mehrkilometer: "+NUM.format(mehr)+" km x "+EUR.format(a.kmPreis)+"\n";
+    t+="Betrag: "+EUR.format(kmBetrag)+"\n";
+  } else { t+="Mehrkilometer: keine\n"; }
+  if(liste.length){
+    t+="\n*Weitere Positionen*\n";
+    liste.forEach(p=>{
+      t+=p.t+": "+EUR.format(p.betrag)+"\n";
+      if(p.zusatz)t+="  ("+p.zusatz+")\n";
+      if(erkl)t+="  "+p.e+"\n";
+    });
+  }
+  t+="\n*Gesamt: "+EUR.format(summe)+"*\n";
+  t+="Kaution: "+EUR.format(kaution)+"\n";
+  t+=(rest>=0?"Rückzahlung an Sie: ":"Offen von Ihnen: ")+EUR.format(Math.abs(rest))+"\n";
+  t+="\nVielen Dank für die Miete. Bei Fragen melden Sie sich gerne.";
+  return t;
+}
+
+function nummer(){
+  let n=($("nummer").value||"").replace(/[^0-9+]/g,"");
+  if(!n)return "";
+  if(n.startsWith("+"))n=n.slice(1);
+  else if(n.startsWith("00"))n=n.slice(2);
+  else if(n.startsWith("0"))n="49"+n.slice(1);
+  return n;
+}
+$("senden").onclick=()=>{
+  const n=nummer();
+  window.open("https://wa.me/"+n+"?text="+encodeURIComponent($("vorschau").textContent),"_blank");
+};
+$("kopieren").onclick=async()=>{
+  try{ await navigator.clipboard.writeText($("vorschau").textContent);
+    $("kopieren").textContent="Kopiert"; setTimeout(()=>$("kopieren").textContent="Text kopieren",1400);
+  }catch(e){ alert("Bitte den Text unten markieren und kopieren."); }
+};
+
+$("auto").onchange=()=>{ const a=auto(); $("kaution").value=a.kaution; rechne(); };
+document.addEventListener("input",rechne);
+document.addEventListener("change",rechne);
+$("kaution").value=D.cars[0].kaution;
+rechne();
+</script></body></html>
