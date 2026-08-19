@@ -57,13 +57,12 @@ button.zweit{background:#fff;color:#16161A;border:1.5px solid var(--rand)}
 <main>
 
 <div class="karte">
-  <h2>Fahrzeug und Mietdauer</h2>
+  <h2>Fahrzeug und Freikilometer</h2>
   <label>Fahrzeug</label>
   <select id="auto"></select>
-  <div class="zwei">
-    <div><label>Miettage</label><input id="tage" type="number" inputmode="numeric" min="1" value="1"></div>
-    <div><label>Kilometerpaket</label><select id="paket"></select></div>
-  </div>
+  <label>Freikilometer insgesamt</label>
+  <input id="frei" type="number" inputmode="numeric" min="0" value="150" placeholder="z. B. 600">
+  <div class="hinweis">Die Kilometer, die der Kunde laut Vertrag frei hat.</div>
 </div>
 
 <div class="karte">
@@ -110,9 +109,6 @@ const NUM=new Intl.NumberFormat("de-DE");
 const auto=()=>D.cars.find(a=>a.n===$("auto").value)||D.cars[0];
 
 $("auto").innerHTML=D.cars.map(a=>'<option>'+a.n+'</option>').join("");
-$("paket").innerHTML='<option value="-1">Kein Paket</option>'
-  +D.stufen.map((s,i)=>'<option value="'+i+'">+'+s+' km pro Tag</option>').join("");
-
 $("posten").innerHTML=POSTEN.map(p=>
   '<div class="posten" data-k="'+p.k+'">'
   +'<div class="kopf"><div class="schalter"><i></i></div>'
@@ -134,8 +130,6 @@ document.querySelectorAll(".posten .kopf").forEach(k=>{
   k.onclick=e=>{ if(e.target.tagName==="INPUT")return;
     k.parentElement.classList.toggle("an"); rechne(); };
 });
-
-function paketFrei(){ const i=+$("paket").value; return i<0?0:D.stufen[i]; }
 
 function postenListe(){
   const raus=[];
@@ -165,8 +159,7 @@ function postenListe(){
 
 function rechne(){
   const a=auto();
-  const tage=Math.max(1,+$("tage").value||1);
-  const frei=(D.freiKm+paketFrei())*tage;
+  const frei=Math.max(0,+$("frei").value||0);
   const v=+$("kmVon").value, b=+$("kmBis").value;
   const gefahren=(v>0&&b>0&&b>=v)?b-v:0;
   const mehr=Math.max(0,gefahren-frei);
@@ -174,7 +167,7 @@ function rechne(){
 
   $("kmErg").innerHTML=
     '<div class="z"><span class="k">Gefahren</span><b>'+NUM.format(gefahren)+' km</b></div>'
-    +'<div class="z"><span class="k">Frei ('+NUM.format(D.freiKm+paketFrei())+' km x '+tage+' Tage)</span><b>'+NUM.format(frei)+' km</b></div>'
+    +'<div class="z"><span class="k">Frei laut Vertrag</span><b>'+NUM.format(frei)+' km</b></div>'
     +'<div class="z"><span class="k">Mehrkilometer</span><b class="'+(mehr?'rot':'gruen')+'">'+NUM.format(mehr)+' km</b></div>'
     +(mehr?'<div class="z"><span class="k">'+NUM.format(mehr)+' km x '+EUR.format(a.kmPreis)+'</span><b class="rot">'+EUR.format(kmBetrag)+'</b></div>':'')
     +'<div class="z gross"><span>Mehrkilometer</span><span class="'+(mehr?'rot':'gruen')+'">'+EUR.format(kmBetrag)+'</span></div>';
@@ -193,12 +186,12 @@ function rechne(){
     +'<div class="z gross"><span>'+(rest>=0?'Rückzahlung':'Nachzahlung')+'</span><span class="'
       +(rest>=0?'gruen':'rot')+'">'+EUR.format(Math.abs(rest))+'</span></div>';
 
-  $("vorschau").textContent=text(a,tage,frei,gefahren,mehr,kmBetrag,liste,summe,kaution,rest);
+  $("vorschau").textContent=text(a,frei,gefahren,mehr,kmBetrag,liste,summe,kaution,rest);
 }
 
-function text(a,tage,frei,gefahren,mehr,kmBetrag,liste,summe,kaution,rest){
+function text(a,frei,gefahren,mehr,kmBetrag,liste,summe,kaution,rest){
   const erkl=$("mitErkl").checked;
-  let t="*Endabrechnung "+a.n+"*\n"+tage+" Miettage\n";
+  let t="*Endabrechnung "+a.n+"*\n";
   t+="\n*Kilometer*\n";
   t+="Gefahren: "+NUM.format(gefahren)+" km\n";
   t+="Inklusive: "+NUM.format(frei)+" km\n";
