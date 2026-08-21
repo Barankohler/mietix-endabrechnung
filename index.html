@@ -102,7 +102,7 @@ button.zweit{background:#fff;color:#16161A;border:1.5px solid var(--rand)}
 
 </main>
 <script>
-const D={"freiKm": 150, "stufen": [50, 100, 150, 200, 300], "cars": [{"n": "Audi RS Q8", "gp": 349.0, "pakete": [109, 189, 259, 319, 439], "kmPreis": 2.49, "kaution": 1950}, {"n": "Audi RS 5 ABT", "gp": 249.0, "pakete": [99, 169, 229, 289, 399], "kmPreis": 2.29, "kaution": 1450}, {"n": "Audi RS 3 Limousine", "gp": 199.0, "pakete": [89, 149, 199, 249, 349], "kmPreis": 1.99, "kaution": 1450}, {"n": "VW Golf 8 GTI Clubsport", "gp": 149.0, "pakete": [79, 129, 179, 219, 309], "kmPreis": 1.79, "kaution": 1000}, {"n": "Audi RS 6", "gp": 349.0, "pakete": [109, 189, 259, 319, 439], "kmPreis": 2.49, "kaution": 1950}, {"n": "Mercedes GLC 63 S AMG", "gp": 269.0, "pakete": [99, 169, 229, 289, 399], "kmPreis": 2.29, "kaution": 1450}, {"n": "Mercedes C 63 S AMG", "gp": 289.0, "pakete": [99, 169, 229, 289, 399], "kmPreis": 2.29, "kaution": 1450}, {"n": "Audi R8 performance", "gp": 399.0, "pakete": [129, 229, 309, 379, 509], "kmPreis": 2.99, "kaution": 1950}, {"n": "Mercedes E 400 d", "gp": 149.0, "pakete": [55, 89, 119, 149, 199], "kmPreis": 1.29, "kaution": 1000}, {"n": "VW Golf 8 2.0 Diesel", "gp": 99.0, "pakete": [39, 65, 85, 99, 129], "kmPreis": 0.89, "kaution": 1000}]}, POSTEN=[{"k": "aufbereitung", "t": "Aufbereitung Innenraum", "betrag": 199, "art": "fest", "e": "Das Fahrzeug riecht nach Rauch, Tierhaaren oder Essen. Der Innenraum muss professionell aufbereitet werden, inklusive Ozonbehandlung, Polster und Lüftung. Während dieser Zeit kann das Fahrzeug nicht vermietet werden."}, {"k": "reinigung", "t": "Reinigung aussen und innen", "betrag": 49, "art": "fest", "e": "Vereinbart ist die Rückgabe in sauberem Zustand. Das Fahrzeug wurde stark verschmutzt zurückgegeben und musste vor der nächsten Vermietung gewaschen und ausgesaugt werden."}, {"k": "kraftstoff", "t": "Kraftstoff", "betrag": 2.5, "art": "einheit", "einheit": "fehlende Liter", "pauschale": 25, "e": "Vereinbart ist die Rückgabe mit vollem Tank. Berechnet werden die fehlenden Liter zum Tagespreis plus eine Servicepauschale für die Fahrt zur Tankstelle."}, {"k": "verspaetung", "t": "Verspätete Rückgabe", "betrag": 0, "art": "einheit", "einheit": "angefangene Stunden", "e": "Berechnet wird jede angefangene Stunde nach der vereinbarten Rückgabezeit. Ab vier Stunden entspricht das einem vollen Miettag, weil der Anschlussmieter in dieser Zeit nicht bedient werden kann."}, {"k": "schlüssel", "t": "Schlüsselverlust", "betrag": 750, "art": "fest", "e": "Ein Ersatzschlüssel muss beim Hersteller bestellt und programmiert werden. Bis er da ist, steht das Fahrzeug still."}, {"k": "papiere", "t": "Fahrzeugpapiere verloren", "betrag": 150, "art": "fest", "e": "Zulassungsbescheinigung Teil I muss neu bei der Zulassungsstelle beantragt werden. Enthalten sind Gebühren und Fahrtzeit."}, {"k": "owi", "t": "Bearbeitung Bussgeld", "betrag": 25, "art": "einheit", "einheit": "Vorgänge", "e": "Für jede behördliche Anfrage zu einem Verstoss in Ihrer Mietzeit müssen wir als Halter Auskunft geben. Berechnet wird nur dieser Aufwand. Das Bussgeld selbst zahlen Sie direkt an die Behörde."}, {"k": "abholung", "t": "Abholung oder Rückführung", "betrag": 1.5, "art": "einheit", "einheit": "Kilometer", "e": "Das Fahrzeug wurde nicht am vereinbarten Ort zurückgegeben und musste von uns abgeholt werden. Berechnet werden die gefahrenen Kilometer."}, {"k": "ausserhalb", "t": "Rückgabe ausserhalb der Zeiten", "betrag": 49, "art": "fest", "e": "Die Rückgabe fand ausserhalb der vereinbarten Zeiten statt und musste persönlich betreut werden."}, {"k": "sonstiges", "t": "Sonstiges", "betrag": 0, "art": "frei", "e": "Frei eintragbare Position mit eigener Bezeichnung."}];
+const D={"freiKm": 150, "stufen": [50, 100, 150, 200, 300], "cars": [{"n": "Audi RS Q8", "gp": 349.0, "pakete": [109, 189, 259, 319, 439], "kmPreis": 2.49, "kaution": 1950, "frSa": 450}, {"n": "Audi RS 5 ABT", "gp": 249.0, "pakete": [99, 169, 229, 289, 399], "kmPreis": 2.29, "kaution": 1450, "frSa": 349}, {"n": "Audi RS 3 Limousine", "gp": 199.0, "pakete": [89, 149, 199, 249, 349], "kmPreis": 1.99, "kaution": 1450, "frSa": 249}, {"n": "VW Golf 8 GTI Clubsport", "gp": 149.0, "pakete": [79, 129, 179, 219, 309], "kmPreis": 1.79, "kaution": 1000, "frSa": 199}, {"n": "Audi RS 6", "gp": 349.0, "pakete": [109, 189, 259, 319, 439], "kmPreis": 2.49, "kaution": 1950, "frSa": 450}, {"n": "Mercedes GLC 63 S AMG", "gp": 269.0, "pakete": [99, 169, 229, 289, 399], "kmPreis": 2.29, "kaution": 1450, "frSa": 349}, {"n": "Mercedes C 63 S AMG", "gp": 289.0, "pakete": [99, 169, 229, 289, 399], "kmPreis": 2.29, "kaution": 1450, "frSa": 349}, {"n": "Audi R8 performance", "gp": 399.0, "pakete": [129, 229, 309, 379, 509], "kmPreis": 2.99, "kaution": 1950, "frSa": 499}, {"n": "Mercedes E 400 d", "gp": 149.0, "pakete": [55, 89, 119, 149, 199], "kmPreis": 1.29, "kaution": 1000, "frSa": 199}, {"n": "VW Golf 8 2.0 Diesel", "gp": 99.0, "pakete": [39, 65, 85, 99, 129], "kmPreis": 0.89, "kaution": 1000, "frSa": 129}]}, POSTEN=[{"k": "aufbereitung", "t": "Aufbereitung Innenraum", "betrag": 199, "art": "fest", "e": "Das Fahrzeug riecht nach Rauch, Tierhaaren oder Essen. Der Innenraum muss professionell aufbereitet werden, inklusive Ozonbehandlung, Polster und Lüftung. Während dieser Zeit kann das Fahrzeug nicht vermietet werden."}, {"k": "reinigung", "t": "Reinigung aussen und innen", "betrag": 49, "art": "fest", "e": "Vereinbart ist die Rückgabe in sauberem Zustand. Das Fahrzeug wurde stark verschmutzt zurückgegeben und musste vor der nächsten Vermietung gewaschen und ausgesaugt werden."}, {"k": "kraftstoff", "t": "Kraftstoff", "betrag": 2.5, "art": "einheit", "einheit": "fehlende Liter", "pauschale": 25, "e": "Vereinbart ist die Rückgabe mit vollem Tank. Berechnet werden die fehlenden Liter zum Tagespreis plus eine Servicepauschale für die Fahrt zur Tankstelle."}, {"k": "verspaetung", "t": "Verspätete Rückgabe", "betrag": 0, "art": "einheit", "einheit": "angefangene Stunden", "e": "Berechnet wird jede angefangene Stunde nach der vereinbarten Rückgabezeit. Ab vier Stunden entspricht das einem vollen Miettag, weil der Anschlussmieter in dieser Zeit nicht bedient werden kann."}, {"k": "schlüssel", "t": "Schlüsselverlust", "betrag": 750, "art": "fest", "e": "Ein Ersatzschlüssel muss beim Hersteller bestellt und programmiert werden. Bis er da ist, steht das Fahrzeug still."}, {"k": "papiere", "t": "Fahrzeugpapiere verloren", "betrag": 150, "art": "fest", "e": "Zulassungsbescheinigung Teil I muss neu bei der Zulassungsstelle beantragt werden. Enthalten sind Gebühren und Fahrtzeit."}, {"k": "owi", "t": "Bearbeitung Bussgeld", "betrag": 25, "art": "einheit", "einheit": "Vorgänge", "e": "Für jede behördliche Anfrage zu einem Verstoss in Ihrer Mietzeit müssen wir als Halter Auskunft geben. Berechnet wird nur dieser Aufwand. Das Bussgeld selbst zahlen Sie direkt an die Behörde."}, {"k": "abholung", "t": "Abholung oder Rückführung", "betrag": 1.5, "art": "einheit", "einheit": "Kilometer", "e": "Das Fahrzeug wurde nicht am vereinbarten Ort zurückgegeben und musste von uns abgeholt werden. Berechnet werden die gefahrenen Kilometer."}, {"k": "ausserhalb", "t": "Rückgabe ausserhalb der Zeiten", "betrag": 49, "art": "fest", "e": "Die Rückgabe fand ausserhalb der vereinbarten Zeiten statt und musste persönlich betreut werden."}, {"k": "sonstiges", "t": "Sonstiges", "betrag": 0, "art": "frei", "e": "Frei eintragbare Position mit eigener Bezeichnung."}];
 const $=id=>document.getElementById(id);
 const EUR=new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR"});
 const NUM=new Intl.NumberFormat("de-DE");
@@ -237,4 +237,53 @@ document.addEventListener("input",rechne);
 document.addEventListener("change",rechne);
 $("kaution").value=D.cars[0].kaution;
 rechne();
+
+function __uebernehmen(p){
+  D.freiKm=p.freiKm; D.stufen=p.kmStufen;
+  D.cars=p.cars.map(function(c){return {n:c.anzeige,gp:c.gp,pakete:c.km.slice(1),
+    kmPreis:c.kmPreis,kaution:c.kaution};});
+  var w=document.getElementById("auto"), alt=w.value;
+  w.innerHTML=D.cars.map(function(a){return '<option>'+a.n+'</option>';}).join("");
+  w.value=D.cars.some(function(a){return a.n===alt;})?alt:D.cars[0].n;
+}
+
+/* --- Gemeinsame Preisdatei: eine Aenderung wirkt in allen Werkzeugen --- */
+(function(){
+  try{
+    fetch("https://barankohler.github.io/mietix-preise/preise.json",{cache:"no-store"})
+      .then(function(r){return r.ok?r.json():null;})
+      .then(function(p){
+        if(!p||!p.cars||!p.cars.length)return;
+        __uebernehmen(p);
+        var neu=(typeof render==="function")?render:
+                (typeof zeichne==="function")?zeichne:
+                (typeof rechne==="function")?rechne:null;
+        if(neu)neu();
+      }).catch(function(){});
+  }catch(e){}
+})();
+
+/* --- Handynummer des Kunden zwischen den Werkzeugen merken ---
+   Nur zwei Stunden gueltig, damit nie eine alte Nummer aus einem
+   anderen Vorgang vorbelegt wird. */
+(function(){
+  try{
+    var f=document.getElementById("knr")||document.getElementById("nummer")||document.getElementById("tel");
+    if(!f)return;
+    var roh=localStorage.getItem("mietixNummer");
+    if(roh&&!f.value.trim()){
+      var w=JSON.parse(roh);
+      if(w&&w.nr&&(Date.now()-w.zeit)<2*60*60*1000){
+        f.value=w.nr;
+        f.dispatchEvent(new Event("input",{bubbles:true}));
+        f.dispatchEvent(new Event("change",{bubbles:true}));
+      }
+    }
+    f.addEventListener("input",function(){
+      var v=f.value.trim();
+      if(v.replace(/\D/g,"").length>=8)
+        localStorage.setItem("mietixNummer",JSON.stringify({nr:v,zeit:Date.now()}));
+    });
+  }catch(e){}
+})();
 </script></body></html>
