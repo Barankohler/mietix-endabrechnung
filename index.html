@@ -191,7 +191,9 @@ function rechne(){
 
 function text(a,frei,gefahren,mehr,kmBetrag,liste,summe,kaution,rest){
   const erkl=$("mitErkl").checked;
-  let t="*Endabrechnung "+a.n+"*\n";
+  const heute=new Date().toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"});
+  let t="Hallo,\n\nvielen Dank für die Rückgabe. Hier Ihre Abrechnung.\n\n";
+  t+="*Endabrechnung "+a.n+"*\nRückgabe am "+heute+"\n";
   t+="\n*Kilometer*\n";
   t+="Gefahren: "+NUM.format(gefahren)+" km\n";
   t+="Inklusive: "+NUM.format(frei)+" km\n";
