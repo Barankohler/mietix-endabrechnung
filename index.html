@@ -60,6 +60,9 @@ button.zweit{background:#fff;color:#16161A;border:1.5px solid var(--rand)}
   <h2>Fahrzeug und Freikilometer</h2>
   <label>Fahrzeug</label>
   <select id="auto"></select>
+  <label>Kennzeichen</label>
+  <input id="kennzeichen" type="text" placeholder="z. B. WI-MX 620" autocapitalize="characters">
+  <div class="hinweis">Wird je Fahrzeug gemerkt und beim nächsten Mal vorbelegt.</div>
   <label>Freikilometer insgesamt</label>
   <input id="frei" type="number" inputmode="numeric" min="0" value="150" placeholder="z. B. 600">
   <div class="hinweis">Die Kilometer, die der Kunde laut Vertrag frei hat.</div>
@@ -192,8 +195,9 @@ function rechne(){
 function text(a,frei,gefahren,mehr,kmBetrag,liste,summe,kaution,rest){
   const erkl=$("mitErkl").checked;
   const heute=new Date().toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"});
+  const kz=(document.getElementById("kennzeichen").value||"").trim();
   let t="Hallo,\n\nvielen Dank für die Rückgabe. Hier Ihre Abrechnung.\n\n";
-  t+="*Endabrechnung "+a.n+"*\nRückgabe am "+heute+"\n";
+  t+="*Endabrechnung "+a.n+(kz?" ("+kz+")":"")+"*\nRückgabe am "+heute+"\n";
   t+="\n*Kilometer*\n\n";
   t+="- Gefahren: "+NUM.format(gefahren)+" km\n";
   t+="- Inklusive: "+NUM.format(frei)+" km\n";
@@ -288,5 +292,26 @@ function __uebernehmen(p){
         localStorage.setItem("mietixNummer",JSON.stringify({nr:v,zeit:Date.now()}));
     });
   }catch(e){}
+})();
+
+/* Kennzeichen je Fahrzeug merken, dasselbe Gedaechtnis wie im Schadensformular */
+(function(){
+  const auto=document.getElementById("auto"), kz=document.getElementById("kennzeichen");
+  if(!auto||!kz)return;
+  function lesen(){ try{ return JSON.parse(localStorage.getItem("mietixKennzeichen")||"{}"); }
+                    catch(e){ return {}; } }
+  function holen(){
+    const g=lesen()[auto.value];
+    if(g && !kz.value.trim()){ kz.value=g; kz.dispatchEvent(new Event("input",{bubbles:true})); }
+  }
+  function merken(){
+    const v=kz.value.trim();
+    if(!auto.value || !v) return;
+    try{ const k=lesen(); k[auto.value]=v;
+         localStorage.setItem("mietixKennzeichen",JSON.stringify(k)); }catch(e){}
+  }
+  auto.addEventListener("change",()=>{ kz.value=""; holen(); rechne(); });
+  kz.addEventListener("input",()=>{ merken(); rechne(); });
+  holen();
 })();
 </script></body></html>
