@@ -74,6 +74,7 @@ button.zweit{background:#fff;color:#16161A;border:1.5px solid var(--rand)}
     <div><label>Bei Übergabe</label><input id="kmVon" type="number" inputmode="numeric" placeholder="z. B. 24500"></div>
     <div><label>Bei Rückgabe</label><input id="kmBis" type="number" inputmode="numeric" placeholder="z. B. 25740"></div>
   </div>
+  <div class="hinweis" id="uebergabehinweis"></div>
   <div class="erg" id="kmErg"></div>
 </div>
 
@@ -310,8 +311,22 @@ function __uebernehmen(p){
     try{ const k=lesen(); k[auto.value]=v;
          localStorage.setItem("mietixKennzeichen",JSON.stringify(k)); }catch(e){}
   }
-  auto.addEventListener("change",()=>{ kz.value=""; holen(); rechne(); });
+  /* Kilometerstand der letzten Uebergabe uebernehmen, damit er nicht
+     abgetippt werden muss. Nur vorbelegen, nie ueberschreiben. */
+  function uebergabeHolen(){
+    const kmVon=document.getElementById("kmVon");
+    const hin=document.getElementById("uebergabehinweis");
+    let u={}; try{ u=JSON.parse(localStorage.getItem("mietixUebergabe")||"{}"); }catch(e){}
+    const g=u[auto.value];
+    if(g && g.km){
+      if(!kmVon.value){ kmVon.value=g.km; kmVon.dispatchEvent(new Event("input",{bubbles:true})); }
+      if(hin) hin.textContent="Aus dem Übergabe-Protokoll vom "+g.datum+": "
+        +Number(g.km).toLocaleString("de-DE")+" km.";
+    } else if(hin){ hin.textContent=""; }
+  }
+  auto.addEventListener("change",()=>{ kz.value=""; holen();
+    const kmVon=document.getElementById("kmVon"); kmVon.value=""; uebergabeHolen(); rechne(); });
   kz.addEventListener("input",()=>{ merken(); rechne(); });
-  holen();
+  holen(); uebergabeHolen();
 })();
 </script></body></html>
