@@ -194,24 +194,25 @@ function text(a,frei,gefahren,mehr,kmBetrag,liste,summe,kaution,rest){
   const heute=new Date().toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"});
   let t="Hallo,\n\nvielen Dank für die Rückgabe. Hier Ihre Abrechnung.\n\n";
   t+="*Endabrechnung "+a.n+"*\nRückgabe am "+heute+"\n";
-  t+="\n*Kilometer*\n";
-  t+="Gefahren: "+NUM.format(gefahren)+" km\n";
-  t+="Inklusive: "+NUM.format(frei)+" km\n";
+  t+="\n*Kilometer*\n\n";
+  t+="- Gefahren: "+NUM.format(gefahren)+" km\n";
+  t+="- Inklusive: "+NUM.format(frei)+" km\n";
   if(mehr>0){
-    t+="Mehrkilometer: "+NUM.format(mehr)+" km x "+EUR.format(a.kmPreis)+"\n";
-    t+="Betrag: "+EUR.format(kmBetrag)+"\n";
-  } else { t+="Mehrkilometer: keine\n"; }
+    t+="- Mehrkilometer: "+NUM.format(mehr)+" km x "+EUR.format(a.kmPreis)+"\n";
+    t+="- Betrag: "+EUR.format(kmBetrag)+"\n";
+  } else { t+="- Mehrkilometer: keine\n"; }
   if(liste.length){
-    t+="\n*Weitere Positionen*\n";
+    t+="\n*Weitere Positionen*\n\n";
     liste.forEach(p=>{
-      t+=p.t+": "+EUR.format(p.betrag)+"\n";
-      if(p.zusatz)t+="  ("+p.zusatz+")\n";
+      t+="- "+p.t+": "+EUR.format(p.betrag)+"\n";
+      if(p.zusatz)t+="  "+p.zusatz+"\n";
       if(erkl)t+="  "+p.e+"\n";
     });
   }
-  t+="\n*Gesamt: "+EUR.format(summe)+"*\n";
-  t+="Kaution: "+EUR.format(kaution)+"\n";
-  t+=(rest>=0?"Rückzahlung an Sie: ":"Offen von Ihnen: ")+EUR.format(Math.abs(rest))+"\n";
+  t+="\n*Abrechnung*\n\n";
+  t+="- Gesamt: "+EUR.format(summe)+"\n";
+  t+="- Kaution: "+EUR.format(kaution)+"\n";
+  t+="- "+(rest>=0?"Rückzahlung an Sie: ":"Offen von Ihnen: ")+EUR.format(Math.abs(rest))+"\n";
   t+="\nVielen Dank für die Miete. Bei Fragen melden Sie sich gerne.";
   return t;
 }
