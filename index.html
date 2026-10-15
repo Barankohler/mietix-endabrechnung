@@ -7,31 +7,30 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--rot:#C4161C;--dunkel:#2E2E30;--rand:#E2E2E4;--grau:#6F6F72;--gruen:#1B8A4B}
+:root{--rot:#C4161C;--dunkel:#1B1B1E;--rand:#E4E4E8;--grau:#6B6B73;--gruen:#1B8A4B}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{margin:0;background:#F2F2F4;font:16px/1.45 Inter,system-ui,sans-serif;color:#16161A;
   padding-bottom:40px}
-header{background:var(--dunkel);color:#fff;position:sticky;top:0;z-index:9;
-  padding:calc(10px + env(safe-area-inset-top)) 18px 10px;border-bottom:3px solid var(--rot)}
+header{background:var(--dunkel);color:#fff;padding:16px 18px;position:sticky;top:0;z-index:9;
+  border-bottom:4px solid var(--rot)}
 header b{font-weight:800;letter-spacing:.14em;font-size:15px}
 header b span{color:var(--rot)}
 main{max-width:640px;margin:0 auto;padding:16px}
-.karte{background:#fff;border:none;border-radius:20px;padding:17px;margin-bottom:18px;
-  box-shadow:0 1px 2px rgba(0,0,0,.05),0 6px 16px rgba(0,0,0,.045)}
-h2{font-size:11px;letter-spacing:.9px;text-transform:uppercase;color:var(--grau);
+.karte{background:#fff;border:1px solid var(--rand);border-radius:16px;padding:16px;margin-bottom:14px}
+h2{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--grau);
   margin:0 0 12px;font-weight:800}
 label{display:block;font-size:13px;font-weight:600;color:var(--grau);margin:10px 0 5px}
-input,select{width:100%;padding:15px 16px;font:800 18px Inter,system-ui,sans-serif;
-  border:1px solid var(--rand);border-radius:16px;background:#fff;color:#16161A;min-height:56px}
-input:focus,select:focus{outline:2px solid var(--dunkel);outline-offset:-2px;border-color:var(--rand)}
+input,select{width:100%;padding:13px 14px;font:600 17px Inter,system-ui,sans-serif;
+  border:1.5px solid var(--rand);border-radius:11px;background:#fff;color:#16161A}
+input:focus,select:focus{outline:none;border-color:var(--rot)}
 .zwei{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.erg{background:#FAFAFB;border:1px solid var(--rand);border-radius:14px;padding:13px 15px;margin-top:12px}
+.erg{background:#FAFAFB;border:1px solid var(--rand);border-radius:12px;padding:12px 14px;margin-top:12px}
 .z{display:flex;justify-content:space-between;gap:12px;padding:6px 0;font-size:15px}
 .z b{font-weight:700}
 .z.gross{font-size:19px;font-weight:800;border-top:1.5px solid var(--rand);margin-top:6px;padding-top:10px}
 .z .k{color:var(--grau)}
 .rot{color:var(--rot)}.gruen{color:var(--gruen)}
-.posten{border:1px solid var(--rand);border-radius:16px;padding:13px 15px;margin-bottom:10px}
+.posten{border:1.5px solid var(--rand);border-radius:12px;padding:12px 14px;margin-bottom:10px}
 .posten.an{border-color:var(--rot);background:#FFF7F7}
 .kopf{display:flex;align-items:center;gap:12px;cursor:pointer}
 .kopf .t{flex:1;font-weight:700;font-size:15px}
@@ -47,8 +46,8 @@ input:focus,select:focus{outline:2px solid var(--dunkel);outline-offset:-2px;bor
 .posten.an .rumpf{display:block}
 .erkl{font-size:13px;line-height:1.5;color:var(--grau);background:#F4F4F6;border-radius:9px;
   padding:10px 12px;margin-top:10px}
-button{width:100%;padding:17px;font:800 17px Inter,system-ui,sans-serif;border:0;border-radius:16px;
-  background:var(--rot);color:#fff;margin-top:10px;min-height:56px}
+button{width:100%;padding:16px;font:800 17px Inter,system-ui,sans-serif;border:0;border-radius:13px;
+  background:var(--rot);color:#fff;margin-top:10px}
 button.zweit{background:#fff;color:#16161A;border:1.5px solid var(--rand)}
 .hinweis{font-size:12.5px;color:var(--grau);margin-top:8px;line-height:1.45}
 .wa{background:#fff;border:1px solid var(--rand);border-radius:12px;padding:12px 14px;
@@ -61,9 +60,6 @@ button.zweit{background:#fff;color:#16161A;border:1.5px solid var(--rand)}
   <h2>Fahrzeug und Freikilometer</h2>
   <label>Fahrzeug</label>
   <select id="auto"></select>
-  <label>Kennzeichen</label>
-  <input id="kennzeichen" type="text" placeholder="z. B. WI-MX 620" autocapitalize="characters">
-  <div class="hinweis">Wird je Fahrzeug gemerkt und beim nächsten Mal vorbelegt.</div>
   <label>Freikilometer insgesamt</label>
   <input id="frei" type="number" inputmode="numeric" min="0" value="150" placeholder="z. B. 600">
   <div class="hinweis">Die Kilometer, die der Kunde laut Vertrag frei hat.</div>
@@ -106,7 +102,7 @@ button.zweit{background:#fff;color:#16161A;border:1.5px solid var(--rand)}
 
 </main>
 <script>
-const D={"freiKm": 150, "stufen": [50, 100, 150, 200, 300], "cars": [{"n": "Audi RS Q8", "gp": 349.0, "pakete": [109, 189, 259, 319, 439], "kmPreis": 2.49, "kaution": 1950, "frSa": 450}, {"n": "Audi RS 5 ABT", "gp": 249.0, "pakete": [99, 169, 229, 289, 399], "kmPreis": 2.29, "kaution": 1450, "frSa": 349}, {"n": "Audi RS 3 Limousine", "gp": 199.0, "pakete": [89, 149, 199, 249, 349], "kmPreis": 1.99, "kaution": 1450, "frSa": 249}, {"n": "VW Golf 8 GTI Clubsport", "gp": 149.0, "pakete": [79, 129, 179, 219, 309], "kmPreis": 1.79, "kaution": 1000, "frSa": 199}, {"n": "Audi RS 6", "gp": 349.0, "pakete": [109, 189, 259, 319, 439], "kmPreis": 2.49, "kaution": 1950, "frSa": 450}, {"n": "Mercedes GLC 63 S AMG", "gp": 269.0, "pakete": [99, 169, 229, 289, 399], "kmPreis": 2.29, "kaution": 1450, "frSa": 349}, {"n": "Mercedes C 63 S AMG", "gp": 289.0, "pakete": [99, 169, 229, 289, 399], "kmPreis": 2.29, "kaution": 1450, "frSa": 349}, {"n": "Audi R8 performance", "gp": 399.0, "pakete": [129, 229, 309, 379, 509], "kmPreis": 2.99, "kaution": 1950, "frSa": 499}, {"n": "Mercedes E 400 d", "gp": 149.0, "pakete": [55, 89, 119, 149, 199], "kmPreis": 1.29, "kaution": 1000, "frSa": 199}, {"n": "VW Golf 8 2.0 Diesel", "gp": 99.0, "pakete": [39, 65, 85, 99, 129], "kmPreis": 0.89, "kaution": 1000, "frSa": 129}]}, POSTEN=[{"k": "aufbereitung", "t": "Aufbereitung Innenraum", "betrag": 199, "art": "fest", "e": "Das Fahrzeug riecht nach Rauch, Tierhaaren oder Essen. Der Innenraum muss professionell aufbereitet werden, inklusive Ozonbehandlung, Polster und Lüftung. Während dieser Zeit kann das Fahrzeug nicht vermietet werden."}, {"k": "reinigung", "t": "Reinigung aussen und innen", "betrag": 49, "art": "fest", "e": "Vereinbart ist die Rückgabe in sauberem Zustand. Das Fahrzeug wurde stark verschmutzt zurückgegeben und musste vor der nächsten Vermietung gewaschen und ausgesaugt werden."}, {"k": "kraftstoff", "t": "Kraftstoff", "betrag": 2.5, "art": "einheit", "einheit": "fehlende Liter", "pauschale": 25, "e": "Vereinbart ist die Rückgabe mit vollem Tank. Berechnet werden die fehlenden Liter zum Tagespreis plus eine Servicepauschale für die Fahrt zur Tankstelle."}, {"k": "verspaetung", "t": "Verspätete Rückgabe", "betrag": 0, "art": "einheit", "einheit": "angefangene Stunden", "e": "Berechnet wird jede angefangene Stunde nach der vereinbarten Rückgabezeit. Ab vier Stunden entspricht das einem vollen Miettag, weil der Anschlussmieter in dieser Zeit nicht bedient werden kann."}, {"k": "schlüssel", "t": "Schlüsselverlust", "betrag": 750, "art": "fest", "e": "Ein Ersatzschlüssel muss beim Hersteller bestellt und programmiert werden. Bis er da ist, steht das Fahrzeug still."}, {"k": "papiere", "t": "Fahrzeugpapiere verloren", "betrag": 150, "art": "fest", "e": "Zulassungsbescheinigung Teil I muss neu bei der Zulassungsstelle beantragt werden. Enthalten sind Gebühren und Fahrtzeit."}, {"k": "owi", "t": "Bearbeitung Bussgeld", "betrag": 25, "art": "einheit", "einheit": "Vorgänge", "e": "Für jede behördliche Anfrage zu einem Verstoss in Ihrer Mietzeit müssen wir als Halter Auskunft geben. Berechnet wird nur dieser Aufwand. Das Bussgeld selbst zahlen Sie direkt an die Behörde."}, {"k": "abholung", "t": "Abholung oder Rückführung", "betrag": 1.5, "art": "einheit", "einheit": "Kilometer", "e": "Das Fahrzeug wurde nicht am vereinbarten Ort zurückgegeben und musste von uns abgeholt werden. Berechnet werden die gefahrenen Kilometer."}, {"k": "ausserhalb", "t": "Rückgabe ausserhalb der Zeiten", "betrag": 49, "art": "fest", "e": "Die Rückgabe fand ausserhalb der vereinbarten Zeiten statt und musste persönlich betreut werden."}, {"k": "sonstiges", "t": "Sonstiges", "betrag": 0, "art": "frei", "e": "Frei eintragbare Position mit eigener Bezeichnung."}];
+const D={"freiKm": 150, "stufen": [50, 100, 150, 200, 300], "cars": [{"n": "Audi RS Q8", "gp": 349.0, "pakete": [109, 189, 259, 319, 439], "kmPreis": 2.49, "kaution": 1950}, {"n": "Audi RS 5 ABT", "gp": 249.0, "pakete": [99, 169, 229, 289, 399], "kmPreis": 2.29, "kaution": 1450}, {"n": "Audi RS 3 Limousine", "gp": 199.0, "pakete": [89, 149, 199, 249, 349], "kmPreis": 1.99, "kaution": 1450}, {"n": "VW Golf 8 GTI Clubsport", "gp": 149.0, "pakete": [79, 129, 179, 219, 309], "kmPreis": 1.79, "kaution": 1000}, {"n": "Audi RS 6", "gp": 349.0, "pakete": [109, 189, 259, 319, 439], "kmPreis": 2.49, "kaution": 1950}, {"n": "Mercedes GLC 63 S AMG", "gp": 269.0, "pakete": [99, 169, 229, 289, 399], "kmPreis": 2.29, "kaution": 1450}, {"n": "Mercedes C 63 S AMG", "gp": 289.0, "pakete": [99, 169, 229, 289, 399], "kmPreis": 2.29, "kaution": 1450}, {"n": "Audi R8 performance", "gp": 399.0, "pakete": [129, 229, 309, 379, 509], "kmPreis": 2.99, "kaution": 1950}, {"n": "VW Golf 8 2.0 Diesel", "gp": 99.0, "pakete": [39, 65, 85, 99, 129], "kmPreis": 0.89, "kaution": 1000}, {"n": "Mercedes S 580L AMG", "gp": 349.0, "pakete": [109, 189, 259, 319, 439], "kmPreis": 2.49, "kaution": 1950}, {"n": "BMW M 850i", "gp": 249.0, "pakete": [99, 169, 229, 289, 399], "kmPreis": 2.29, "kaution": 1450}]}, POSTEN=[{"k": "aufbereitung", "t": "Aufbereitung Innenraum", "betrag": 199, "art": "fest", "e": "Das Fahrzeug riecht nach Rauch, Tierhaaren oder Essen. Der Innenraum muss professionell aufbereitet werden, inklusive Ozonbehandlung, Polster und Lüftung. Während dieser Zeit kann das Fahrzeug nicht vermietet werden."}, {"k": "reinigung", "t": "Reinigung aussen und innen", "betrag": 49, "art": "fest", "e": "Vereinbart ist die Rückgabe in sauberem Zustand. Das Fahrzeug wurde stark verschmutzt zurückgegeben und musste vor der nächsten Vermietung gewaschen und ausgesaugt werden."}, {"k": "kraftstoff", "t": "Kraftstoff", "betrag": 2.5, "art": "einheit", "einheit": "fehlende Liter", "pauschale": 25, "e": "Vereinbart ist die Rückgabe mit vollem Tank. Berechnet werden die fehlenden Liter zum Tagespreis plus eine Servicepauschale für die Fahrt zur Tankstelle."}, {"k": "verspaetung", "t": "Verspätete Rückgabe", "betrag": 0, "art": "einheit", "einheit": "angefangene Stunden", "e": "Berechnet wird jede angefangene Stunde nach der vereinbarten Rückgabezeit. Ab vier Stunden entspricht das einem vollen Miettag, weil der Anschlussmieter in dieser Zeit nicht bedient werden kann."}, {"k": "schlüssel", "t": "Schlüsselverlust", "betrag": 750, "art": "fest", "e": "Ein Ersatzschlüssel muss beim Hersteller bestellt und programmiert werden. Bis er da ist, steht das Fahrzeug still."}, {"k": "papiere", "t": "Fahrzeugpapiere verloren", "betrag": 150, "art": "fest", "e": "Zulassungsbescheinigung Teil I muss neu bei der Zulassungsstelle beantragt werden. Enthalten sind Gebühren und Fahrtzeit."}, {"k": "owi", "t": "Bearbeitung Bussgeld", "betrag": 25, "art": "einheit", "einheit": "Vorgänge", "e": "Für jede behördliche Anfrage zu einem Verstoss in Ihrer Mietzeit müssen wir als Halter Auskunft geben. Berechnet wird nur dieser Aufwand. Das Bussgeld selbst zahlen Sie direkt an die Behörde."}, {"k": "abholung", "t": "Abholung oder Rückführung", "betrag": 1.5, "art": "einheit", "einheit": "Kilometer", "e": "Das Fahrzeug wurde nicht am vereinbarten Ort zurückgegeben und musste von uns abgeholt werden. Berechnet werden die gefahrenen Kilometer."}, {"k": "ausserhalb", "t": "Rückgabe ausserhalb der Zeiten", "betrag": 49, "art": "fest", "e": "Die Rückgabe fand ausserhalb der vereinbarten Zeiten statt und musste persönlich betreut werden."}, {"k": "sonstiges", "t": "Sonstiges", "betrag": 0, "art": "frei", "e": "Frei eintragbare Position mit eigener Bezeichnung."}];
 const $=id=>document.getElementById(id);
 const EUR=new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR"});
 const NUM=new Intl.NumberFormat("de-DE");
@@ -195,29 +191,25 @@ function rechne(){
 
 function text(a,frei,gefahren,mehr,kmBetrag,liste,summe,kaution,rest){
   const erkl=$("mitErkl").checked;
-  const heute=new Date().toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"});
-  const kz=(document.getElementById("kennzeichen").value||"").trim();
-  let t="Hallo,\n\nvielen Dank für die Rückgabe. Hier Ihre Abrechnung.\n\n";
-  t+="*Endabrechnung "+a.n+(kz?" ("+kz+")":"")+"*\nRückgabe am "+heute+"\n";
-  t+="\n*Kilometer*\n\n";
-  t+="- Gefahren: "+NUM.format(gefahren)+" km\n";
-  t+="- Inklusive: "+NUM.format(frei)+" km\n";
+  let t="*Endabrechnung "+a.n+"*\n";
+  t+="\n*Kilometer*\n";
+  t+="Gefahren: "+NUM.format(gefahren)+" km\n";
+  t+="Inklusive: "+NUM.format(frei)+" km\n";
   if(mehr>0){
-    t+="- Mehrkilometer: "+NUM.format(mehr)+" km x "+EUR.format(a.kmPreis)+"\n";
-    t+="- Betrag: "+EUR.format(kmBetrag)+"\n";
-  } else { t+="- Mehrkilometer: keine\n"; }
+    t+="Mehrkilometer: "+NUM.format(mehr)+" km x "+EUR.format(a.kmPreis)+"\n";
+    t+="Betrag: "+EUR.format(kmBetrag)+"\n";
+  } else { t+="Mehrkilometer: keine\n"; }
   if(liste.length){
-    t+="\n*Weitere Positionen*\n\n";
+    t+="\n*Weitere Positionen*\n";
     liste.forEach(p=>{
-      t+="- "+p.t+": "+EUR.format(p.betrag)+"\n";
-      if(p.zusatz)t+="  "+p.zusatz+"\n";
+      t+=p.t+": "+EUR.format(p.betrag)+"\n";
+      if(p.zusatz)t+="  ("+p.zusatz+")\n";
       if(erkl)t+="  "+p.e+"\n";
     });
   }
-  t+="\n*Abrechnung*\n\n";
-  t+="- Gesamt: "+EUR.format(summe)+"\n";
-  t+="- Kaution: "+EUR.format(kaution)+"\n";
-  t+="- "+(rest>=0?"Rückzahlung an Sie: ":"Offen von Ihnen: ")+EUR.format(Math.abs(rest))+"\n";
+  t+="\n*Gesamt: "+EUR.format(summe)+"*\n";
+  t+="Kaution: "+EUR.format(kaution)+"\n";
+  t+=(rest>=0?"Rückzahlung an Sie: ":"Offen von Ihnen: ")+EUR.format(Math.abs(rest))+"\n";
   t+="\nVielen Dank für die Miete. Bei Fragen melden Sie sich gerne.";
   return t;
 }
@@ -245,74 +237,4 @@ document.addEventListener("input",rechne);
 document.addEventListener("change",rechne);
 $("kaution").value=D.cars[0].kaution;
 rechne();
-
-function __uebernehmen(p){
-  D.freiKm=p.freiKm; D.stufen=p.kmStufen;
-  D.cars=p.cars.map(function(c){return {n:c.anzeige,gp:c.gp,pakete:c.km.slice(1),
-    kmPreis:c.kmPreis,kaution:c.kaution};});
-  var w=document.getElementById("auto"), alt=w.value;
-  w.innerHTML=D.cars.map(function(a){return '<option>'+a.n+'</option>';}).join("");
-  w.value=D.cars.some(function(a){return a.n===alt;})?alt:D.cars[0].n;
-}
-
-/* --- Gemeinsame Preisdatei: eine Aenderung wirkt in allen Werkzeugen --- */
-(function(){
-  try{
-    fetch("https://barankohler.github.io/mietix-preise/preise.json",{cache:"no-store"})
-      .then(function(r){return r.ok?r.json():null;})
-      .then(function(p){
-        if(!p||!p.cars||!p.cars.length)return;
-        __uebernehmen(p);
-        var neu=(typeof render==="function")?render:
-                (typeof zeichne==="function")?zeichne:
-                (typeof rechne==="function")?rechne:null;
-        if(neu)neu();
-      }).catch(function(){});
-  }catch(e){}
-})();
-
-/* --- Handynummer des Kunden zwischen den Werkzeugen merken ---
-   Nur zwei Stunden gueltig, damit nie eine alte Nummer aus einem
-   anderen Vorgang vorbelegt wird. */
-(function(){
-  try{
-    var f=document.getElementById("knr")||document.getElementById("nummer")||document.getElementById("tel");
-    if(!f)return;
-    var roh=localStorage.getItem("mietixNummer");
-    if(roh&&!f.value.trim()){
-      var w=JSON.parse(roh);
-      if(w&&w.nr&&(Date.now()-w.zeit)<2*60*60*1000){
-        f.value=w.nr;
-        f.dispatchEvent(new Event("input",{bubbles:true}));
-        f.dispatchEvent(new Event("change",{bubbles:true}));
-      }
-    }
-    f.addEventListener("input",function(){
-      var v=f.value.trim();
-      if(v.replace(/\D/g,"").length>=8)
-        localStorage.setItem("mietixNummer",JSON.stringify({nr:v,zeit:Date.now()}));
-    });
-  }catch(e){}
-})();
-
-/* Kennzeichen je Fahrzeug merken, dasselbe Gedaechtnis wie im Schadensformular */
-(function(){
-  const auto=document.getElementById("auto"), kz=document.getElementById("kennzeichen");
-  if(!auto||!kz)return;
-  function lesen(){ try{ return JSON.parse(localStorage.getItem("mietixKennzeichen")||"{}"); }
-                    catch(e){ return {}; } }
-  function holen(){
-    const g=lesen()[auto.value];
-    if(g && !kz.value.trim()){ kz.value=g; kz.dispatchEvent(new Event("input",{bubbles:true})); }
-  }
-  function merken(){
-    const v=kz.value.trim();
-    if(!auto.value || !v) return;
-    try{ const k=lesen(); k[auto.value]=v;
-         localStorage.setItem("mietixKennzeichen",JSON.stringify(k)); }catch(e){}
-  }
-  auto.addEventListener("change",()=>{ kz.value=""; holen(); rechne(); });
-  kz.addEventListener("input",()=>{ merken(); rechne(); });
-  holen();
-})();
 </script></body></html>
