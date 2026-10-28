@@ -56,6 +56,8 @@ button.zweit{background:#fff;color:#16161A;border:1.5px solid var(--rand)}
 </style></head><body>
 <header><b>MIETIX <span>ENDABRECHNUNG</span></b></header>
 <main>
+<div id="abgleich"></div>
+<div id="vertragInfo" style="display:none;background:#E8F6EE;color:#1B8A4B;border-radius:12px;padding:10px 12px;font-weight:700;margin-bottom:12px"></div>
 
 <div class="karte">
   <h2>Fahrzeug und Freikilometer</h2>
@@ -109,6 +111,21 @@ button.zweit{background:#fff;color:#16161A;border:1.5px solid var(--rand)}
 const D={"freiKm": 150, "stufen": [50, 100, 150, 200, 300], "cars": [{"n": "Audi RS Q8", "gp": 349.0, "pakete": [109, 189, 259, 319, 439], "kmPreis": 2.49, "kaution": 1950, "frSa": 450}, {"n": "Audi RS 5 ABT", "gp": 249.0, "pakete": [99, 169, 229, 289, 399], "kmPreis": 2.29, "kaution": 1450, "frSa": 349}, {"n": "Audi RS 3 Limousine", "gp": 199.0, "pakete": [89, 149, 199, 249, 349], "kmPreis": 1.99, "kaution": 1450, "frSa": 249}, {"n": "VW Golf 8 GTI Clubsport", "gp": 149.0, "pakete": [79, 129, 179, 219, 309], "kmPreis": 1.79, "kaution": 1000, "frSa": 199}, {"n": "Audi RS 6", "gp": 349.0, "pakete": [109, 189, 259, 319, 439], "kmPreis": 2.49, "kaution": 1950, "frSa": 450}, {"n": "Mercedes GLC 63 S AMG", "gp": 269.0, "pakete": [99, 169, 229, 289, 399], "kmPreis": 2.29, "kaution": 1450, "frSa": 349}, {"n": "Mercedes C 63 S AMG", "gp": 289.0, "pakete": [99, 169, 229, 289, 399], "kmPreis": 2.29, "kaution": 1450, "frSa": 349}, {"n": "Audi R8 performance", "gp": 399.0, "pakete": [129, 229, 309, 379, 509], "kmPreis": 2.99, "kaution": 2500, "frSa": 499}, {"n": "VW Golf 8 2.0 Diesel", "gp": 99.0, "pakete": [39, 65, 85, 99, 129], "kmPreis": 0.89, "kaution": 1000, "frSa": 129}, {"n": "Mercedes-Benz S580L AMG Chauffeur-Paket", "gp": 349.0, "pakete": [109, 189, 259, 319, 439], "kmPreis": 2.49, "kaution": 1950, "frSa": 450}, {"n": "BMW M 850i", "gp": 249.0, "pakete": [99, 169, 229, 289, 399], "kmPreis": 2.29, "kaution": 1450, "frSa": 349}]}, POSTEN=[{"k": "aufbereitung", "t": "Aufbereitung Innenraum", "betrag": 199, "art": "fest", "e": "Das Fahrzeug riecht nach Rauch, Tierhaaren oder Essen. Der Innenraum muss professionell aufbereitet werden, inklusive Ozonbehandlung, Polster und Lüftung. Während dieser Zeit kann das Fahrzeug nicht vermietet werden."}, {"k": "reinigung", "t": "Reinigung aussen und innen", "betrag": 49, "art": "fest", "e": "Vereinbart ist die Rückgabe in sauberem Zustand. Das Fahrzeug wurde stark verschmutzt zurückgegeben und musste vor der nächsten Vermietung gewaschen und ausgesaugt werden."}, {"k": "kraftstoff", "t": "Kraftstoff", "betrag": 2.5, "art": "einheit", "einheit": "fehlende Liter", "pauschale": 25, "e": "Vereinbart ist die Rückgabe mit vollem Tank. Berechnet werden die fehlenden Liter zum Tagespreis plus eine Servicepauschale für die Fahrt zur Tankstelle."}, {"k": "verspaetung", "t": "Verspätete Rückgabe", "betrag": 0, "art": "einheit", "einheit": "angefangene Stunden", "e": "Berechnet wird jede angefangene Stunde nach der vereinbarten Rückgabezeit. Ab vier Stunden entspricht das einem vollen Miettag, weil der Anschlussmieter in dieser Zeit nicht bedient werden kann."}, {"k": "schlüssel", "t": "Schlüsselverlust", "betrag": 750, "art": "fest", "e": "Ein Ersatzschlüssel muss beim Hersteller bestellt und programmiert werden. Bis er da ist, steht das Fahrzeug still."}, {"k": "papiere", "t": "Fahrzeugpapiere verloren", "betrag": 150, "art": "fest", "e": "Zulassungsbescheinigung Teil I muss neu bei der Zulassungsstelle beantragt werden. Enthalten sind Gebühren und Fahrtzeit."}, {"k": "owi", "t": "Bearbeitung Bussgeld", "betrag": 25, "art": "einheit", "einheit": "Vorgänge", "e": "Für jede behördliche Anfrage zu einem Verstoss in Ihrer Mietzeit müssen wir als Halter Auskunft geben. Berechnet wird nur dieser Aufwand. Das Bussgeld selbst zahlen Sie direkt an die Behörde."}, {"k": "abholung", "t": "Abholung oder Rückführung", "betrag": 1.5, "art": "einheit", "einheit": "Kilometer", "e": "Das Fahrzeug wurde nicht am vereinbarten Ort zurückgegeben und musste von uns abgeholt werden. Berechnet werden die gefahrenen Kilometer."}, {"k": "ausserhalb", "t": "Rückgabe ausserhalb der Zeiten", "betrag": 49, "art": "fest", "e": "Die Rückgabe fand ausserhalb der vereinbarten Zeiten statt und musste persönlich betreut werden."}, {"k": "sonstiges", "t": "Sonstiges", "betrag": 0, "art": "frei", "e": "Frei eintragbare Position mit eigener Bezeichnung."}];
 const $=id=>document.getElementById(id);
 const EUR=new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR"});
+/* Paket C (28.10.2026): ?vertrag=NR holt alles aus dem Mietvertrag (gleicher Speicher wie das Vertragswerkzeug).
+   Mehrkilometer-Preis ist der aus dem Vertrag (steht dort unterschrieben), sonst der aus der Preisdatei. */
+let VERTRAG=null,LETZTE=null;
+const zahlDE=v=>{const t=String(v==null?"":v).trim();if(!t)return 0;const n=parseFloat(t.indexOf(",")>=0?t.replace(/\./g,"").replace(",","."):t.replace(/\.(?=\d{3}(\D|$))/g,""));return isNaN(n)?0:n};
+function vertragLaden(){const nr=new URLSearchParams(location.search).get("vertrag");if(!nr)return;
+  try{VERTRAG=(JSON.parse(localStorage.getItem("mietixVorg"+"aenge")||"[]")).find(v=>v.nr===nr)||null}catch(e){VERTRAG=null}
+  if(!VERTRAG){$("vertragInfo").style.display="block";$("vertragInfo").textContent="Vertrag "+nr+" ist auf diesem Gerät noch nicht da. Einmal oben anmelden, dann kommt er.";return}
+  const v=VERTRAG;const w=$("auto");if([...w.options].some(o=>o.value===v.auto))w.value=v.auto;
+  $("kennzeichen").value=v.kz||"";$("frei").value=Math.round(zahlDE(v.freikm))||"";
+  $("kmVon").value=Math.round(zahlDE((v.ueb||{}).km||v.km))||"";$("kmBis").value=Math.round(zahlDE((v.rueck||{}).km))||"";
+  const k=zahlDE(((v.zahlung||{}).kaut||{}).betrag);if(k)$("kaution").value=k;
+  if(v.telefon)$("nummer").value=v.telefon;
+  const mk=zahlDE(v.mehrkm);if(mk){D.cars.forEach(c=>{if(c.n===v.auto)c.kmPreis=mk})}
+  $("vertragInfo").style.display="block";$("vertragInfo").textContent="Aus Mietvertrag "+v.nr+": "+v.name+", "+v.auto+". Nichts zu tippen, nur Zusatzkosten antippen, falls welche anfallen.";
+  if(typeof rechne==="function")rechne()}
 const NUM=new Intl.NumberFormat("de-DE");
 const auto=()=>D.cars.find(a=>a.n===$("auto").value)||D.cars[0];
 
@@ -180,6 +197,7 @@ function rechne(){
   const summe=kmBetrag+liste.reduce((s,p)=>s+p.betrag,0);
   const kaution=+$("kaution").value||0;
   const rest=kaution-summe;
+  LETZTE={gefahren,mehr,kmBetrag,posten:liste.map(p=>({t:p.t,betrag:p.betrag})),summe,kaution,rest};
 
   $("summe").innerHTML=
     (kmBetrag?'<div class="z"><span class="k">Mehrkilometer</span><b>'+EUR.format(kmBetrag)+'</b></div>':'')
@@ -230,8 +248,11 @@ function nummer(){
   else if(n.startsWith("0"))n="49"+n.slice(1);
   return n;
 }
+function ergebnisMerken(){if(!VERTRAG||!LETZTE)return;   // Ergebnis an den Vorgang, die Brücke trägt es in die Excel
+  try{const k="mietixVorg"+"aenge",l=JSON.parse(localStorage.getItem(k)||"[]"),v=l.find(x=>x.nr===VERTRAG.nr);
+    if(v){v.endabrechnung=Object.assign({},LETZTE,{am:new Date().toISOString().slice(0,10)});localStorage.setItem(k,JSON.stringify(l))}}catch(e){}}
 $("senden").onclick=()=>{
-  const n=nummer();
+  const n=nummer();ergebnisMerken();
   window.open("https://wa.me/"+n+"?text="+encodeURIComponent($("vorschau").textContent),"_blank");
 };
 $("kopieren").onclick=async()=>{
@@ -253,6 +274,7 @@ function __uebernehmen(p){
   var w=document.getElementById("auto"), alt=w.value;
   w.innerHTML=D.cars.map(function(a){return '<option>'+a.n+'</option>';}).join("");
   w.value=D.cars.some(function(a){return a.n===alt;})?alt:D.cars[0].n;
+  vertragLaden();
 }
 
 /* --- Gemeinsame Preisdatei: eine Aenderung wirkt in allen Werkzeugen --- */
@@ -314,5 +336,132 @@ function __uebernehmen(p){
   auto.addEventListener("change",()=>{ kz.value=""; holen(); rechne(); });
   kz.addEventListener("input",()=>{ merken(); rechne(); });
   holen();
+})();
+vertragLaden();
+</script>
+<script>/* Mietix Abgleich: Verträge, Anfragen, Kunden und Fahrzeuge auf allen Geräten gleich (Supabase Frankfurt, seit 26.10.2026).
+   Wird von tools/vertrag/build_html.py und tools/anfragen/build_html.py in die Seite eingebaut.
+   - Die Werkzeuge arbeiten weiter nur mit localStorage. Dieser Baustein merkt jede Änderung an den vier Speichern,
+     schickt sie hoch und holt neue Stände der anderen Geräte (beim Start, beim Zurückkehren zur Seite, jede Minute).
+   - Ohne Internet oder ohne Anmeldung läuft alles wie vorher, der Abgleich holt später nach.
+   - Gelöschte Einträge (Anfragen-Buch) gehen als {_weg:true} hoch, damit sie auch auf den anderen Geräten verschwinden.
+   - Anmeldung: E-Mail und Passwort, einmal pro Gerät. Gilt für alle Mietix-Werkzeuge auf barankohler.github.io. */
+(function(){
+const URL_="https://zbeqrwvlmiulxvhryiku.supabase.co";
+const KEY="sb_publishable_LVkvpgXMpBbq_OXgwOfTqg_ZRcRkFyQ";   // öffentlich gedacht, Schutz über Anmeldung und Regeln in der Datenbank
+const SPEICHER={mietixVorgaenge:{tab:"vorgaenge",pk:"nr",liste:true},mietixAnfragen:{tab:"anfragen",pk:"id",liste:true},
+  mietixKunden:{tab:"kunden",pk:"name",liste:false},mietixFahrzeuge:{tab:"fahrzeuge",pk:"name",liste:false},
+  mietixAusgaben:{tab:"ausgaben",pk:"id",liste:true},mietixSperren:{tab:"sperren",pk:"id",liste:true}};
+const roh=Storage.prototype.setItem;
+const lies=(k,d)=>{try{return JSON.parse(localStorage.getItem(k)||"")||d}catch(e){return d}};
+const merk=(k,v)=>{try{roh.call(localStorage,k,JSON.stringify(v))}catch(e){}};
+const hash=s=>{let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return String(h)};
+let sitzung=lies("mietixSitzung",null),laeuft=false,nochmal=false,zuletzt=null,fehler="";
+
+/* ---------- Anmeldung ---------- */
+async function auth(pfad,body){const r=await fetch(URL_+"/auth/v1/"+pfad,{method:"POST",headers:{apikey:KEY,"Content-Type":"application/json"},body:JSON.stringify(body)});
+  const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error_description||j.msg||j.message||"Anmeldung fehlgeschlagen");return j}
+function sichern(j){sitzung={token:j.access_token,neu:j.refresh_token,bis:Date.now()+(j.expires_in||3600)*1000-60000,
+  email:(j.user&&j.user.email)||(sitzung&&sitzung.email)||""};merk("mietixSitzung",sitzung)}
+async function token(){if(!sitzung)return null;
+  if(Date.now()>sitzung.bis){try{sichern(await auth("token?grant_type=refresh_token",{refresh_token:sitzung.neu}))}
+    catch(e){if(navigator.onLine){sitzung=null;localStorage.removeItem("mietixSitzung");zeigen()}return null}}
+  return sitzung.token}
+async function api(pfad,opt){const t=await token();if(!t)throw new Error("nicht angemeldet");
+  const r=await fetch(URL_+"/rest/v1/"+pfad,Object.assign({},opt,{headers:Object.assign({apikey:KEY,Authorization:"Bearer "+t,"Content-Type":"application/json"},(opt||{}).headers||{})}));
+  if(!r.ok)throw new Error("Speicher antwortet "+r.status);const s=await r.text();return s?JSON.parse(s):null}
+
+/* ---------- Abgleich ---------- */
+function alsMap(k,w){const c=SPEICHER[k],m={};if(c.liste)(w||[]).forEach(x=>{if(x&&x[c.pk]!==undefined)m[String(x[c.pk])]=x});else Object.assign(m,w||{});return m}
+function ausMap(k,m){const c=SPEICHER[k];if(!c.liste)return m;return Object.keys(m).sort().map(p=>m[p])}
+async function abgleichen(){
+  if(!sitzung||!navigator.onLine)return;if(laeuft){nochmal=true;return}laeuft=true;fehler="";zeigen();
+  const H=lies("mietixAbgleich",{}),geholt=[];
+  try{
+    for(const k of Object.keys(SPEICHER)){const c=SPEICHER[k],h=H[k]=H[k]||{zeit:"",hash:{}},m=alsMap(k,lies(k,c.liste?[]:{}));
+      // 1) hoch: alles, was sich hier seit dem letzten Abgleich geändert hat (auch Gelöschtes)
+      const jetzt=new Date().toISOString(),hoch=[];
+      Object.keys(m).forEach(p=>{const s=JSON.stringify(m[p]);if(h.hash[p]!==hash(s))hoch.push({[c.pk]:p,daten:m[p],geaendert:jetzt})});
+      Object.keys(h.hash).forEach(p=>{if(!(p in m)&&h.hash[p]!=="weg")hoch.push({[c.pk]:p,daten:{_weg:true},geaendert:jetzt})});
+      for(let i=0;i<hoch.length;i+=200)await api(c.tab+"?on_conflict="+c.pk,{method:"POST",headers:{Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify(hoch.slice(i,i+200))});
+      hoch.forEach(z=>h.hash[z[c.pk]]=z.daten._weg?"weg":hash(JSON.stringify(z.daten)));
+      if(k==="mietixVorgaenge"){const max=Math.max(0,...Object.keys(m).filter(n=>/^\d{6}$/.test(n)).map(Number));
+        if(max)await api("rpc/vertragsnummer_mindestens",{method:"POST",body:JSON.stringify({n:max})})}
+      // 2) runter: was die anderen Geräte seit dem letzten Mal geschickt haben
+      const seit=h.zeit?"&geaendert=gt."+encodeURIComponent(h.zeit):"";
+      const zeilen=await api(c.tab+"?select="+c.pk+",daten,geaendert&order=geaendert.asc"+seit,{method:"GET"})||[];
+      let anders=false;const m2=alsMap(k,lies(k,c.liste?[]:{}));
+      zeilen.forEach(z=>{const p=String(z[c.pk]);h.zeit=z.geaendert>h.zeit?z.geaendert:h.zeit;
+        if(z.daten&&z.daten._weg){if(p in m2){delete m2[p];anders=true}h.hash[p]="weg";return}
+        const s=JSON.stringify(z.daten);if(!(p in m2)||JSON.stringify(m2[p])!==s){m2[p]=z.daten;anders=true}h.hash[p]=hash(s)});
+      if(anders){merk(k,ausMap(k,m2));geholt.push(k)}}
+    merk("mietixAbgleich",H);zuletzt=new Date();
+    if(geholt.length)window.dispatchEvent(new CustomEvent("mietix-abgleich",{detail:geholt}));
+  }catch(e){fehler=e.message||"Abgleich fehlgeschlagen"}
+  laeuft=false;zeigen();if(nochmal){nochmal=false;setTimeout(abgleichen,500)}}
+// Jede Änderung an den vier Speichern löst kurz danach einen Abgleich aus
+let warte=null;
+Storage.prototype.setItem=function(k,v){roh.call(this,k,v);if(this===localStorage&&SPEICHER[k]){clearTimeout(warte);warte=setTimeout(abgleichen,800)}};
+
+/* ---------- Vertragsnummer aus dem gemeinsamen Speicher ---------- */
+window.mietixNeueNummer=async function(){if(!sitzung||!navigator.onLine)return null;
+  try{const n=await api("rpc/neue_vertragsnummer",{method:"POST",body:"{}"});return typeof n==="string"?n:null}catch(e){return null}};
+window.mietixAbgleichen=abgleichen;
+
+/* ---------- Link aus der Einladungs- oder Passwort-Mail: Passwort selbst festlegen ---------- */
+let pwSetzen=false,linkFehler="";
+(function(){const h=new URLSearchParams(location.hash.slice(1));if(!h.get("access_token")&&!h.get("error"))return;
+  history.replaceState(null,"",location.pathname+location.search);
+  if(h.get("error")){linkFehler="Der Link aus der Mail ist abgelaufen oder schon benutzt. Bitte eine neue Einladung anfordern.";return}
+  sichern({access_token:h.get("access_token"),refresh_token:h.get("refresh_token"),expires_in:+h.get("expires_in")||3600});
+  pwSetzen=/invite|recovery|signup/.test(h.get("type")||"")})();
+
+/* ---------- Anzeige: Anmeldung oder Stand ---------- */
+function zeigen(){const el=document.getElementById("abgleich");if(!el)return;
+  if(sitzung&&pwSetzen){el.innerHTML='<div class="abgl"><b>Passwort festlegen</b><div class="abgl-text">Für '+(sitzung.email||"dieses Konto")+'. Damit meldest du dich auf allen Geräten an, auch für die Brücke. Mindestens 8 Zeichen.</div>'+
+    '<input id="ablNeu" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Neues Passwort (sichtbar, damit kein Tippfehler)">'+
+    '<button id="ablSetzen" type="button">Passwort speichern</button><div class="abgl-fehler" id="ablFehler"></div></div>';
+    document.getElementById("ablSetzen").onclick=async()=>{const pw=document.getElementById("ablNeu").value,f=document.getElementById("ablFehler");
+      if(pw.length<8){f.textContent="Bitte mindestens 8 Zeichen.";return}
+      try{const t=await token();const r=await fetch(URL_+"/auth/v1/user",{method:"PUT",headers:{apikey:KEY,Authorization:"Bearer "+t,"Content-Type":"application/json"},body:JSON.stringify({password:pw})});
+        if(!r.ok){const j=await r.json().catch(()=>({}));throw new Error(j.msg||j.message||"Speichern ging nicht")}
+        pwSetzen=false;zeigen();abgleichen()}catch(e){f.textContent=e.message}};return}
+  const pkt=document.getElementById("abgleichPunkt");
+  if(pkt)pkt.style.background=!sitzung?"#B0B0B3":fehler?"#C4161C":"#1B8A4B";
+  if(!sitzung){el.innerHTML='<div class="abgl"><b>Geräte abgleichen</b><div class="abgl-text">Einmal anmelden, dann sind Verträge und Anfragen auf allen Geräten gleich.</div>'+
+    '<input id="ablMail" type="email" inputmode="email" autocomplete="username" placeholder="E-Mail">'+
+    '<input id="ablPw" type="password" autocomplete="current-password" placeholder="Passwort">'+
+    '<button id="ablLos" type="button">Anmelden</button><div class="abgl-fehler" id="ablFehler">'+linkFehler+'</div>'+
+    '<a href="#" id="ablNeuZugang" class="abgl-link">Noch keinen Zugang? Hier anlegen</a></div>';
+    const mail=()=>document.getElementById("ablMail").value.trim(),pw=()=>document.getElementById("ablPw").value,f=document.getElementById("ablFehler");
+    document.getElementById("ablLos").onclick=async()=>{f.textContent="";
+      try{sichern(await auth("token?grant_type=password",{email:mail(),password:pw()}));
+        zeigen();abgleichen()}catch(e){f.textContent=/Invalid login/i.test(e.message)?"E-Mail oder Passwort stimmt nicht.":e.message}};
+    // Zugang selbst anlegen: geht nur, solange Baran die Registrierung in Supabase kurz freigibt
+    document.getElementById("ablNeuZugang").onclick=async e=>{e.preventDefault();f.textContent="";
+      if(!mail()||pw().length<8){f.textContent="Oben E-Mail und ein eigenes Passwort (mindestens 8 Zeichen) eintragen, dann hier tippen.";return}
+      try{const j=await auth("signup",{email:mail(),password:pw()});
+        if(j.access_token){sichern(j);zeigen();abgleichen()}else f.textContent="Zugang angelegt. Bitte die Mail bestätigen und dann anmelden."}
+      catch(e){f.textContent=/not allowed|disabled/i.test(e.message)?"Zugang anlegen ist gerade gesperrt. Baran muss es kurz freigeben.":
+        /already/i.test(e.message)?"Für diese E-Mail gibt es schon einen Zugang. Bitte oben anmelden.":e.message}};return}
+  const stand=laeuft?"gleicht ab …":fehler?"nicht abgeglichen: "+fehler:zuletzt?"abgeglichen um "+String(zuletzt.getHours()).padStart(2,"0")+":"+String(zuletzt.getMinutes()).padStart(2,"0"):"wartet auf Internet";
+  el.innerHTML='<div class="abgl klein"><span>Alle Geräte: '+stand+'</span><span><a href="#" id="ablPwNeu">Passwort ändern</a> &nbsp; <a href="#" id="ablAus">abmelden</a></span></div>';
+  // Angemeldet: neues Passwort setzen geht ohne das alte (für "Passwort vergessen" ohne Mail, 28.10.2026)
+  document.getElementById("ablPwNeu").onclick=e=>{e.preventDefault();pwSetzen=true;zeigen()};
+  document.getElementById("ablAus").onclick=e=>{e.preventDefault();if(!confirm("Auf diesem Gerät abmelden? Die Daten bleiben hier."))return;
+    sitzung=null;localStorage.removeItem("mietixSitzung");zeigen()}}
+const css=document.createElement("style");
+css.textContent=".abgl{background:#fff;border:1px solid #E4E4E7;border-radius:16px;padding:14px;margin-bottom:14px}"+
+  ".abgl b{display:block;font-size:15px;margin-bottom:4px}.abgl-text{font-size:13px;color:#6F6F72;margin-bottom:8px}"+
+  ".abgl input{width:100%;border:1px solid #E4E4E7;border-radius:12px;padding:12px;font:600 16px inherit;margin-top:6px;min-height:46px;box-sizing:border-box}"+
+  ".abgl button{width:100%;margin-top:8px;background:#C4161C;color:#fff;border:0;border-radius:12px;padding:13px;font:800 16px inherit;cursor:pointer}"+
+  ".abgl-fehler{color:#C4161C;font-size:13px;font-weight:700;margin-top:6px}"+
+  ".abgl-link{display:block;text-align:center;margin-top:10px;font-size:13px;color:#6F6F72}"+
+  ".abgl.klein{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:#6F6F72;padding:10px 14px}.abgl.klein a{color:#6F6F72}";
+document.head.appendChild(css);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)abgleichen()});
+window.addEventListener("online",abgleichen);
+setInterval(abgleichen,60000);
+zeigen();abgleichen();
 })();
 </script></body></html>
